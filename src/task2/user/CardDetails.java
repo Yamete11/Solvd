@@ -1,6 +1,7 @@
 package task2.user;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class CardDetails {
     private String cardNumber;
@@ -54,5 +55,21 @@ public class CardDetails {
                 .append(", Card Number: **** **** **** ")
                 .append(cardNumber.substring(cardNumber.length() - 4));
         return cardInfo.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardNumber, cardholderName, expirationDate, cvv);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CardDetails that = (CardDetails) o;
+        return cardNumber.equals(that.cardNumber) &&
+                cardholderName.equals(that.cardholderName) &&
+                expirationDate.equals(that.expirationDate) &&
+                cvv.equals(that.cvv);
     }
 }

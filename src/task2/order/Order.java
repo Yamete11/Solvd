@@ -4,6 +4,7 @@ import task2.product.Product;
 import task2.user.Customer;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Order {
     private LocalDate orderDate;
@@ -80,5 +81,22 @@ public class Order {
         }
 
         return orderInfo.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderDate, totalAmount, customer, orderItems, orderStatus);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Double.compare(order.totalAmount, totalAmount) == 0 &&
+                orderDate.equals(order.orderDate) &&
+                customer.equals(order.customer) &&
+                orderItems.equals(order.orderItems) &&
+                orderStatus.equals(order.orderStatus);
     }
 }

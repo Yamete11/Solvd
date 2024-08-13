@@ -3,6 +3,7 @@ package task2.order;
 import task2.user.Address;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Invoice {
     private String invoiceNumber;
@@ -60,5 +61,22 @@ public class Invoice {
 
     public void printInvoice() {
         System.out.println(this);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(invoiceNumber, order, billingAddress, issueDate, totalAmount);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Invoice invoice = (Invoice) o;
+        return Double.compare(invoice.totalAmount, totalAmount) == 0 &&
+                invoiceNumber.equals(invoice.invoiceNumber) &&
+                order.equals(invoice.order) &&
+                billingAddress.equals(invoice.billingAddress) &&
+                issueDate.equals(invoice.issueDate);
     }
 }

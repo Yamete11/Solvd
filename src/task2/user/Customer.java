@@ -1,5 +1,8 @@
 package task2.user;
 
+import java.util.Objects;
+import java.util.Scanner;
+
 public class Customer extends User {
     private Address address;
     private String paymentMethod;
@@ -18,6 +21,27 @@ public class Customer extends User {
         this.paymentMethod = PaymentMethod.CARD;
         this.cardDetails = cardDetails;
     }
+    @Override
+    public String getAccountType() {
+        return "Customer Account";
+    }
+
+    @Override
+    public void resetPassword() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your email address: ");
+        String inputEmail = scanner.nextLine();
+
+        if (inputEmail.equals(getEmail())) {
+            System.out.print("Enter your new password: ");
+            String newPassword = scanner.nextLine();
+            setPassword(newPassword);
+            System.out.println("Password has been successfully reset.");
+        } else {
+            System.out.println("Email address is incorrect. Cannot reset password.");
+        }
+    }
+
 
     public Address getAddress() {
         return address;
@@ -55,5 +79,20 @@ public class Customer extends User {
         }
 
         return customerInfo.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), address, paymentMethod);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        if (!super.equals(o)) return false;
+        Customer customer = (Customer) o;
+        return Objects.equals(address, customer.address) &&
+                Objects.equals(paymentMethod, customer.paymentMethod);
     }
 }

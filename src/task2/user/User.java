@@ -1,6 +1,7 @@
 package task2.user;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class User {
     private LocalDate registrationDate;
@@ -14,6 +15,10 @@ public abstract class User {
         this.password = password;
         this.login = login;
     }
+
+    public abstract String getAccountType();
+
+    public abstract void resetPassword();
 
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
@@ -55,5 +60,18 @@ public abstract class User {
                 .append("  Email: ").append(email).append("\n")
                 .append("  Login: ").append(login);
         return userInfo.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, login);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return email.equals(user.email) && login.equals(user.login);
     }
 }

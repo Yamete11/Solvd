@@ -1,5 +1,7 @@
 package task2.product;
 
+import java.util.Objects;
+
 public class Category {
     private String title;
     private double vat;
@@ -36,5 +38,19 @@ public class Category {
                 .append("VAT: ").append(vat).append("%");
 
         return categoryInfo.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, vat);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Double.compare(category.vat, vat) == 0 &&
+                title.equals(category.title);
     }
 }

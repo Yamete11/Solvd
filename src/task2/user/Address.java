@@ -1,5 +1,7 @@
 package task2.user;
 
+import java.util.Objects;
+
 public class Address {
     private String street;
     private String city;
@@ -53,5 +55,21 @@ public class Address {
                 .append(postalCode).append(", ")
                 .append(country);
         return addressInfo.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(street, city, postalCode, country);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return street.equals(address.street) &&
+                city.equals(address.city) &&
+                postalCode.equals(address.postalCode) &&
+                country.equals(address.country);
     }
 }

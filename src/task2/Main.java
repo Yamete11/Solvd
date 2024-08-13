@@ -4,6 +4,8 @@ import task2.product.*;
 import task2.user.*;
 import task2.order.*;
 
+import java.time.LocalDate;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -13,9 +15,10 @@ public class Main {
         Product laptop = new Product("Laptop", 1000.00, 5, electronics);
         Product book = new Product("Novel", 20.00, 50, books);
 
-        Admin admin = new Admin("admin@example.com", "adminpass", "adminLogin", Role.SYSTEM_ADMIN);
+        Admin admin = new Admin("admin@example.com", "adminpass", "adminLogin", Role.SYSTEM_ADMIN, "secret");
 
         Address customerAddress = new Address("123 Marszalkowska", "Warsaw", "10001", "Poland");
+        CardDetails cardDetails = new CardDetails("1234567812345678", "John Marston", LocalDate.of(2025, 12, 31), "123");
         Customer customer = new Customer("customer@example.com", "customerpass", "customerLogin", customerAddress);
 
         Order customerOrder = new Order(customer);

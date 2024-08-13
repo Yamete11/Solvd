@@ -3,6 +3,7 @@ package task2.product;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Product {
     private String title;
@@ -123,6 +124,22 @@ public class Product {
         return reviews;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, price, stockQuantity, category);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(product.price, price) == 0 &&
+                stockQuantity == product.stockQuantity &&
+                title.equals(product.title) &&
+                category.equals(product.category);
+    }
+
     public class Review {
         private String title;
         private String comment;
@@ -170,6 +187,22 @@ public class Product {
                     "Rating: " + rating + "/5" + '\n' +
                     "Comment: " + comment + '\n' +
                     "Date: " + reviewDate;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(title, comment, rating, reviewDate);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Review review = (Review) o;
+            return rating == review.rating &&
+                    title.equals(review.title) &&
+                    comment.equals(review.comment) &&
+                    reviewDate.equals(review.reviewDate);
         }
     }
 }
