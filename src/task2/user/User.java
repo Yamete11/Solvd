@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public abstract class User {
-    private LocalDate registrationDate;
-    private String email;
-    private String password;
-    private String login;
+    protected LocalDate registrationDate;
+    protected String email;
+    protected String password;
+    protected String login;
 
     public User(String email, String password, String login) {
         this.registrationDate = LocalDate.now();

@@ -21,6 +21,7 @@ public class Customer extends User {
         this.paymentMethod = PaymentMethod.CARD;
         this.cardDetails = cardDetails;
     }
+
     @Override
     public String getAccountType() {
         return "Customer Account";
@@ -35,13 +36,12 @@ public class Customer extends User {
         if (inputEmail.equals(getEmail())) {
             System.out.print("Enter your new password: ");
             String newPassword = scanner.nextLine();
-            setPassword(newPassword);
+            this.setPassword(newPassword);
             System.out.println("Password has been successfully reset.");
         } else {
             System.out.println("Email address is incorrect. Cannot reset password.");
         }
     }
-
 
     public Address getAddress() {
         return address;
@@ -69,16 +69,16 @@ public class Customer extends User {
 
     @Override
     public String toString() {
-        StringBuilder customerInfo = new StringBuilder(super.toString())
-                .append("\nCustomer Details:\n")
-                .append("  Address: ").append(address).append("\n")
-                .append("  Payment Method: ").append(paymentMethod);
+        String customerInfo = super.toString() +
+                "\nCustomer Details:\n" +
+                "  Address: " + address + "\n" +
+                "  Payment Method: " + paymentMethod;
 
         if (PaymentMethod.CARD.equalsIgnoreCase(paymentMethod) && cardDetails != null) {
-            customerInfo.append("\n  Card Details: ").append(cardDetails);
+            customerInfo += "\n  Card Details: " + cardDetails;
         }
 
-        return customerInfo.toString();
+        return customerInfo;
     }
 
     @Override

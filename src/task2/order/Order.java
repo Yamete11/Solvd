@@ -29,7 +29,7 @@ public class Order {
                 return;
             }
         }
-        System.out.println("Cannot add more items. Order is full.");
+        System.out.println("Order is full");
     }
 
     private void calculateTotalAmount() {
@@ -67,20 +67,19 @@ public class Order {
 
     @Override
     public String toString() {
-        StringBuilder orderInfo = new StringBuilder();
-        orderInfo.append("Order Date: ").append(orderDate).append('\n')
-                .append("Customer: ").append(customer.getEmail()).append('\n')
-                .append("Total Amount: $").append(totalAmount).append('\n')
-                .append("Order Status: ").append(orderStatus).append('\n')
-                .append("Items: \n");
+        String orderInfo = "Order Date: " + orderDate + '\n' +
+                "Customer: " + customer.getEmail() + '\n' +
+                "Total Amount: $" + totalAmount + '\n' +
+                "Order Status: " + orderStatus + '\n' +
+                "Items: \n";
 
         for (OrderItem item : orderItems) {
             if (item != null) {
-                orderInfo.append(item.toString()).append('\n');
+                orderInfo += item.toString() + '\n';
             }
         }
 
-        return orderInfo.toString();
+        return orderInfo;
     }
 
     @Override
@@ -96,7 +95,7 @@ public class Order {
         return Double.compare(order.totalAmount, totalAmount) == 0 &&
                 orderDate.equals(order.orderDate) &&
                 customer.equals(order.customer) &&
-                orderItems.equals(order.orderItems) &&
+                Objects.equals(orderItems, order.orderItems) &&
                 orderStatus.equals(order.orderStatus);
     }
 }

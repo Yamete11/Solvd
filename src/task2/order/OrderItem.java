@@ -35,12 +35,9 @@ public class OrderItem {
 
     @Override
     public String toString() {
-        StringBuilder itemInfo = new StringBuilder();
-        itemInfo.append("Product: ").append(product.getTitle())
-                .append(", Quantity: ").append(quantity)
-                .append(", Total Price: $").append(getTotalPrice());
-
-        return itemInfo.toString();
+        return "Product: " + product.getTitle() +
+                ", Quantity: " + quantity +
+                ", Total Price: $" + getTotalPrice();
     }
 
     @Override

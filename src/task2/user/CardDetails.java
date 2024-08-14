@@ -50,11 +50,8 @@ public class CardDetails {
 
     @Override
     public String toString() {
-        StringBuilder cardInfo = new StringBuilder();
-        cardInfo.append("Cardholder: ").append(cardholderName)
-                .append(", Card Number: **** **** **** ")
-                .append(cardNumber.substring(cardNumber.length() - 4));
-        return cardInfo.toString();
+        return "Cardholder: " + cardholderName +
+                ", Card Number: **** **** **** " + cardNumber.substring(cardNumber.length() - 4);
     }
 
     @Override

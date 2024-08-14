@@ -49,12 +49,10 @@ public class Address {
 
     @Override
     public String toString() {
-        StringBuilder addressInfo = new StringBuilder();
-        addressInfo.append(street).append(", ")
-                .append(city).append(", ")
-                .append(postalCode).append(", ")
-                .append(country);
-        return addressInfo.toString();
+        return street + ", " +
+                city + ", " +
+                postalCode + ", " +
+                country;
     }
 
     @Override

@@ -50,13 +50,11 @@ public class Invoice {
 
     @Override
     public String toString() {
-        StringBuilder invoiceDetails = new StringBuilder();
-        invoiceDetails.append("Invoice Number: ").append(invoiceNumber).append('\n')
-                .append("Issue Date: ").append(issueDate).append('\n')
-                .append("Billing Address: ").append(billingAddress).append('\n')
-                .append("Order Details: \n").append(order.toString()).append('\n')
-                .append("Total Amount Due: $").append(totalAmount).append('\n');
-        return invoiceDetails.toString();
+        return "Invoice Number: " + invoiceNumber + '\n' +
+                "Issue Date: " + issueDate + '\n' +
+                "Billing Address: " + billingAddress + '\n' +
+                "Order Details: \n" + order.toString() + '\n' +
+                "Total Amount Due: $" + totalAmount + '\n';
     }
 
     public void printInvoice() {

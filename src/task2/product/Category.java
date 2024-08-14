@@ -33,11 +33,8 @@ public class Category {
 
     @Override
     public String toString() {
-        StringBuilder categoryInfo = new StringBuilder();
-        categoryInfo.append("Category: ").append(title).append('\n')
-                .append("VAT: ").append(vat).append("%");
-
-        return categoryInfo.toString();
+        return "Category: " + title + '\n' +
+                "VAT: " + vat + "%";
     }
 
     @Override

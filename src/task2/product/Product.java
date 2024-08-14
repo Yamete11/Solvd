@@ -1,8 +1,6 @@
 package task2.product;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Product {
@@ -66,22 +64,21 @@ public class Product {
 
     @Override
     public String toString() {
-        StringBuilder productInfo = new StringBuilder();
-        productInfo.append("Title: ").append(title).append('\n')
-                .append("Price: ").append(price).append(" (without VAT)").append('\n')
-                .append("Price with VAT: ").append(calculatePriceWithVAT()).append('\n')
-                .append("Stock Quantity: ").append(stockQuantity).append('\n')
-                .append(category.toString()).append('\n')
-                .append("Average Rating: ").append(getAverageRating()).append("/5").append('\n')
-                .append("Reviews:\n");
+        String productInfo = "Title: " + title + '\n' +
+                "Price: " + price + " (without VAT)" + '\n' +
+                "Price with VAT: " + calculatePriceWithVAT() + '\n' +
+                "Stock Quantity: " + stockQuantity + '\n' +
+                category.toString() + '\n' +
+                "Average Rating: " + getAverageRating() + "/5" + '\n' +
+                "Reviews:\n";
 
         for (Review review : reviews) {
             if (review != null) {
-                productInfo.append(review).append('\n').append('\n');
+                productInfo += review.toString() + '\n' + '\n';
             }
         }
 
-        return productInfo.toString();
+        return productInfo;
     }
 
     public void setTitle(String title) {
