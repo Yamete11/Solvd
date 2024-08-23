@@ -32,13 +32,14 @@ public class Order {
         System.out.println("Order is full");
     }
 
-    private void calculateTotalAmount() {
+    public double calculateTotalAmount() {
         totalAmount = 0.0;
         for (OrderItem item : orderItems) {
             if (item != null) {
                 totalAmount += item.getTotalPrice();
             }
         }
+        return totalAmount;
     }
 
     public void updateOrderStatus(String newStatus) {

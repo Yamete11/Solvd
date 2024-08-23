@@ -1,17 +1,17 @@
 package task2.utils;
 
-import task2.product.*;
-import task2.user.*;
+import task2.product.Category;
+import task2.product.Product;
+import task2.user.Address;
+import task2.user.Admin;
+import task2.user.Customer;
+import task2.user.User;
 
 import java.util.Scanner;
 
 public class UserUtils {
 
     public static boolean validateUser(User user) {
-        if (user.getClass() != User.class) {
-            throw new IllegalArgumentException("Only User instances are allowed.");
-        }
-
         boolean isEmailValid = user.getEmail().contains("@") && user.getEmail().contains(".");
 
         boolean isPasswordValid = user.getPassword().length() >= 8;
@@ -19,7 +19,7 @@ public class UserUtils {
         return isEmailValid && isPasswordValid;
     }
 
-    public static void createNewCustomer() {
+    public static Customer createNewCustomer() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter customer email: ");
         String email = scanner.nextLine();
@@ -34,9 +34,10 @@ public class UserUtils {
 
         Customer newCustomer = new Customer(email, password, login, address);
         System.out.println("New customer created: " + newCustomer);
+        return newCustomer;
     }
 
-    public static void createNewAdmin() {
+    public static Admin createNewAdmin() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter admin email: ");
         String email = scanner.nextLine();
@@ -51,6 +52,7 @@ public class UserUtils {
 
         Admin newAdmin = new Admin(email, password, login, role, secretWord);
         System.out.println("New admin created: " + newAdmin);
+        return newAdmin;
     }
 
     public static Product createProduct(Category[] categories) {
@@ -75,8 +77,6 @@ public class UserUtils {
         System.out.println("Product created: " + product);
         return product;
     }
-
-
 
     public static Category createCategory() {
         Scanner scanner = new Scanner(System.in);
