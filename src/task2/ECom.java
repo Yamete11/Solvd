@@ -38,12 +38,19 @@ public class ECom {
     }
 
     public void printAllOrders() {
+        boolean ordersExist = false;
         for (Order order : orders) {
             if (order != null) {
                 System.out.println(order);
+                System.out.println();
+                ordersExist = true;
             }
         }
+        if (!ordersExist) {
+            System.out.println("The list of orders is empty");
+        }
     }
+
 
     public void addUser(User user) {
         for (int i = 0; i < users.length; i++) {
@@ -57,12 +64,19 @@ public class ECom {
 
 
     public void printAllUsers() {
+        boolean usersExist = false;
         for (User user : users) {
             if (user != null) {
                 System.out.println(user);
+                System.out.println();
+                usersExist = true;
             }
         }
+        if (!usersExist) {
+            System.out.println("The list of users is empty");
+        }
     }
+
 
     public void setOrders(Order[] orders) {
         this.orders = orders;
@@ -87,17 +101,27 @@ public class ECom {
         sb.append("==========================\n");
 
         sb.append("Users:\n");
+        boolean usersExist = false;
         for (User user : users) {
             if (user != null) {
                 sb.append(user).append("\n");
+                usersExist = true;
             }
+        }
+        if (!usersExist) {
+            sb.append("The list of users is empty.\n");
         }
 
         sb.append("\nOrders:\n");
+        boolean ordersExist = false;
         for (Order order : orders) {
             if (order != null) {
                 sb.append(order).append("\n");
+                ordersExist = true;
             }
+        }
+        if (!ordersExist) {
+            sb.append("The list of orders is empty.\n");
         }
 
         sb.append("\nTotal Revenue: $").append(calculateTotalRevenue()).append("\n");
@@ -105,4 +129,5 @@ public class ECom {
 
         return sb.toString();
     }
+
 }
