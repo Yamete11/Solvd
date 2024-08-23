@@ -3,23 +3,26 @@ package task2.user;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Customer extends User {
+public class Customer extends User implements Payable{
     private Address address;
     private String paymentMethod;
     private CardDetails cardDetails;
+    private double accountBalance;
 
-    public Customer(String email, String password, String login, Address address) {
+    public Customer(String email, String password, String login, Address address, double accountBalance) {
         super(email, password, login);
         this.address = address;
         this.paymentMethod = PaymentMethod.CASH;
         this.cardDetails = null;
+        this.accountBalance = accountBalance;
     }
 
-    public Customer(String email, String password, String login, Address address, CardDetails cardDetails) {
+    public Customer(String email, String password, String login, Address address, CardDetails cardDetails, double accountBalance) {
         super(email, password, login);
         this.address = address;
         this.paymentMethod = PaymentMethod.CARD;
         this.cardDetails = cardDetails;
+        this.accountBalance = accountBalance;
     }
 
     @Override
@@ -41,6 +44,10 @@ public class Customer extends User {
         } else {
             System.out.println("Email address is incorrect. Cannot reset password.");
         }
+    }
+
+    public void changeLogin(String newLogin) {
+        updateLogin(newLogin);
     }
 
     public Address getAddress() {
@@ -94,5 +101,29 @@ public class Customer extends User {
         Customer customer = (Customer) o;
         return Objects.equals(address, customer.address) &&
                 Objects.equals(paymentMethod, customer.paymentMethod);
+    }
+
+    @Override
+    public boolean processPayment(double amount) {
+        if (accountBalance >= amount) {
+            accountBalance -= amount;
+            System.out.println("Payment of $" + amount + " processed for customer");
+            return true;
+        } else {
+            System.out.println("Insufficient balance");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean refundPayment(double amount) {
+        accountBalance += amount;
+        System.out.println("Refund of $" + amount + " processed for customer");
+        return true;
+    }
+
+    @Override
+    public String generateReceipt() {
+        return "Receipt: Payment processed. Remaining balance: $" + accountBalance;
     }
 }

@@ -5,7 +5,7 @@ import task2.user.Address;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Invoice {
+public final class Invoice {
     private String invoiceNumber;
     private Order order;
     private Address billingAddress;

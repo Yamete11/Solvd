@@ -6,7 +6,7 @@ import java.util.Objects;
 public abstract class User {
     protected LocalDate registrationDate;
     protected String email;
-    protected String password;
+    private String password;
     protected String login;
 
     public User(String email, String password, String login) {
@@ -19,6 +19,11 @@ public abstract class User {
     public abstract String getAccountType();
 
     public abstract void resetPassword();
+
+    protected final void updateLogin(String newLogin) {
+        this.login = newLogin;
+        System.out.println("Login updated to: " + newLogin);
+    }
 
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;

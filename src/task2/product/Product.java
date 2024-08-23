@@ -1,14 +1,20 @@
 package task2.product;
 
+import task2.Discountable;
+import task2.order.Taxable;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Product {
+public class Product implements Reviewable, Taxable, Discountable {
     private String title;
     private double price;
     private int stockQuantity;
     private Category category;
     private Review[] reviews;
+    private int reviewCount;
+    private double taxRate;
+    private double discountPercentage;
 
     public Product(String title, double price, int stockQuantity, Category category) {
         this.title = title;
@@ -16,6 +22,9 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.category = category;
         this.reviews = new Review[10];
+        this.reviewCount = 0;
+        this.taxRate = category.getVat();
+        this.discountPercentage = 0.0;
     }
 
     public Product(String title, double price, Category category) {
@@ -24,28 +33,56 @@ public class Product {
         this.stockQuantity = 0;
         this.category = category;
         this.reviews = new Review[10];
+        this.reviewCount = 0;
+        this.taxRate = category.getVat();
     }
 
+    @Override
+    public void applyDiscount(double percentage) {
+        if (percentage < 0 || percentage > 100) {
+            System.out.println("Invalid discount percentage. Must be between 0 and 100");
+        } else {
+            discountPercentage = percentage;
+            price -= price * (discountPercentage / 100);
+            System.out.println("Applied " + percentage + "% discount. New price: " + price);
+        }
+    }
+
+    @Override
+    public void removeDiscount() {
+        price += price * (discountPercentage / 100);
+        discountPercentage = 0;
+        System.out.println("Discount removed. Price reset to original: " + price);
+    }
+
+    @Override
+    public double calculateTax() {
+        return price * (taxRate / 100);
+    }
+
+    @Override
+    public double getAverageTaxRate() {
+        return taxRate;
+    }
+
+    @Override
     public void addReview(String reviewerName, String comment, int rating) {
-        for (int i = 0; i < reviews.length; i++) {
-            if (reviews[i] == null) {
-                reviews[i] = new Review(reviewerName, comment, rating);
-                return;
-            }
+        if (reviewCount >= reviews.length) {
+            Review[] newReviews = new Review[reviews.length * 2];
+            System.arraycopy(reviews, 0, newReviews, 0, reviews.length);
+            reviews = newReviews;
         }
-        System.out.println("Review limit reached. Cannot add more reviews.");
+        reviews[reviewCount++] = new Review(reviewerName, comment, rating);
     }
 
+    @Override
     public double getAverageRating() {
+        if (reviewCount == 0) return 0.0;
         double totalRating = 0.0;
-        int count = 0;
-        for (Review review : reviews) {
-            if (review != null) {
-                totalRating += review.getRating();
-                count++;
-            }
+        for (int i = 0; i < reviewCount; i++) {
+            totalRating += reviews[i].getRating();
         }
-        return count == 0 ? 0.0 : totalRating / count;
+        return totalRating / reviewCount;
     }
 
     public void updateStock(int quantity) {
@@ -64,21 +101,19 @@ public class Product {
 
     @Override
     public String toString() {
-        String productInfo = "Title: " + title + '\n' +
+        StringBuilder productInfo = new StringBuilder("Title: " + title + '\n' +
                 "Price: " + price + " (without VAT)" + '\n' +
                 "Price with VAT: " + calculatePriceWithVAT() + '\n' +
                 "Stock Quantity: " + stockQuantity + '\n' +
                 category.toString() + '\n' +
                 "Average Rating: " + getAverageRating() + "/5" + '\n' +
-                "Reviews:\n";
+                "Reviews:\n");
 
-        for (Review review : reviews) {
-            if (review != null) {
-                productInfo += review.toString() + '\n' + '\n';
-            }
+        for (int i = 0; i < reviewCount; i++) {
+            productInfo.append(reviews[i].toString()).append("\n\n");
         }
 
-        return productInfo;
+        return productInfo.toString();
     }
 
     public void setTitle(String title) {
@@ -101,6 +136,10 @@ public class Product {
         this.reviews = reviews;
     }
 
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -119,6 +158,10 @@ public class Product {
 
     public Review[] getReviews() {
         return reviews;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
     }
 
     @Override

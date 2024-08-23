@@ -2,11 +2,9 @@ package task2.utils;
 
 import task2.product.Category;
 import task2.product.Product;
-import task2.user.Address;
-import task2.user.Admin;
-import task2.user.Customer;
-import task2.user.User;
+import task2.user.*;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class UserUtils {
@@ -21,6 +19,7 @@ public class UserUtils {
 
     public static Customer createNewCustomer() {
         Scanner scanner = new Scanner(System.in);
+
         System.out.print("Enter customer email: ");
         String email = scanner.nextLine();
         System.out.print("Enter customer password: ");
@@ -32,10 +31,38 @@ public class UserUtils {
         String[] addressParts = addressInput.split(", ");
         Address address = new Address(addressParts[0], addressParts[1], addressParts[2], addressParts[3]);
 
-        Customer newCustomer = new Customer(email, password, login, address);
-        System.out.println("New customer created: " + newCustomer);
+        System.out.print("Would you like to add card details? (yes/no): ");
+        String addCardDetails = scanner.nextLine();
+
+        CardDetails cardDetails = null;
+        if (addCardDetails.equalsIgnoreCase("yes")) {
+            System.out.print("Enter card number: ");
+            String cardNumber = scanner.nextLine();
+            System.out.print("Enter cardholder name: ");
+            String cardholderName = scanner.nextLine();
+            System.out.print("Enter expiration date (YYYY-MM-DD): ");
+            LocalDate expirationDate = LocalDate.parse(scanner.nextLine());
+            System.out.print("Enter CVV: ");
+            String cvv = scanner.nextLine();
+
+            cardDetails = new CardDetails(cardNumber, cardholderName, expirationDate, cvv);
+        }
+
+        System.out.print("Enter initial account balance (or leave blank for 0.0): ");
+        String balanceInput = scanner.nextLine();
+        double accountBalance = balanceInput.isEmpty() ? 0.0 : Double.parseDouble(balanceInput);
+
+        Customer newCustomer;
+        if (cardDetails != null) {
+            newCustomer = new Customer(email, password, login, address, cardDetails, accountBalance);
+        } else {
+            newCustomer = new Customer(email, password, login, address, accountBalance);
+        }
+
+        System.out.println("Customer created: " + newCustomer);
         return newCustomer;
     }
+
 
     public static Admin createNewAdmin() {
         Scanner scanner = new Scanner(System.in);
@@ -51,7 +78,7 @@ public class UserUtils {
         String secretWord = scanner.nextLine();
 
         Admin newAdmin = new Admin(email, password, login, role, secretWord);
-        System.out.println("New admin created: " + newAdmin);
+        System.out.println("Admin data: " + newAdmin);
         return newAdmin;
     }
 

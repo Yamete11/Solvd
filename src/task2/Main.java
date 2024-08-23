@@ -10,15 +10,74 @@ import java.util.Scanner;
 
 public class Main {
     public static boolean run = true;
-    public static Category[] categories = new Category[10];
-    private static int categoryCount = 0;
-    public static Product[] products = new Product[10];
-    private static int productCount = 0;
 
     public static void main(String[] args) {
+
         ECom eCom = new ECom();
 
-        printInfo();
+        /*Category electronics = new Category("Electronics", 15.0);
+        Category books = new Category("Books", 5.0);
+
+        eCom.addCategory(electronics);
+        eCom.addCategory(books);
+
+        Product laptop = new Product("Laptop", 1000.00, 10, electronics);
+        Product novel = new Product("Novel", 15.00, 100, books);
+        Product phone = new Product("Phone", 500.00, 50, electronics);
+
+        eCom.addProduct(laptop);
+        eCom.addProduct(novel);
+        eCom.addProduct(phone);
+
+        Address customerAddress = new Address("123 Main St", "City", "12345", "Country");
+
+        Customer customer1 = new Customer("john@example.com", "password123", "john_doe", customerAddress, 200.00);
+        Customer customer2 = new Customer("jane@example.com", "password456", "jane_doe", customerAddress, new CardDetails("1234567812345678", "Jane Doe", LocalDate.of(2025, 12, 31), "123"), 500.00);
+
+        eCom.addUser(customer1);
+        eCom.addUser(customer2);
+
+        User admin = new Admin("admin@example.com", "adminpass", "adminLogin", "System Administrator", "secretWord");
+
+        eCom.addUser(admin);
+
+        Order order1 = new Order(customer1);
+        Order order2 = new Order(customer2);
+
+        order1.addItem(laptop, 1);
+        order1.addItem(novel, 2);
+        order2.addItem(phone, 1);
+
+        eCom.addOrder(order1);
+        eCom.addOrder(order2);
+
+        System.out.println("All Users:");
+        eCom.printAllUsers();
+
+        System.out.println("\nAll Orders:");
+        eCom.printAllOrders();
+
+        System.out.println("\nAll Categories:");
+        eCom.printAllCategories();
+
+        System.out.println("\nAll Products:");
+        eCom.printAllProducts();
+
+        System.out.println("\nSearch Results for 'Laptop':");
+        Product[] searchResults = eCom.searchProductByName("Laptop");
+        for (Product product : searchResults) {
+            System.out.println(product);
+        }
+
+        System.out.println("\nFilter Results for 'Electronics':");
+        Product[] filterResults = eCom.filterProductByCategory("Electronics");
+        for (Product product : filterResults) {
+            System.out.println(product);
+        }
+
+        System.out.println("\nTotal Revenue: $" + eCom.calculateTotalRevenue());*/
+
+        /*printInfo();
         while (run) {
             System.out.print("Enter command: ");
             Scanner scanner = new Scanner(System.in);
@@ -27,8 +86,7 @@ public class Main {
                 System.out.println("You have to enter a command");
             } else {
                 switch (command) {
-                    case "-cnc":
-                    case "--create-new-customer":
+                    case "-cnc", "--create-new-customer" -> {
                         Customer newCustomer = UserUtils.createNewCustomer();
                         if (UserUtils.validateUser(newCustomer)) {
                             eCom.addUser(newCustomer);
@@ -36,10 +94,8 @@ public class Main {
                         } else {
                             System.out.println("Invalid customer data");
                         }
-                        break;
-
-                    case "-cna":
-                    case "--create-new-admin":
+                    }
+                    case "-cna", "--create-new-admin" -> {
                         Admin newAdmin = UserUtils.createNewAdmin();
                         if (UserUtils.validateUser(newAdmin)) {
                             eCom.addUser(newAdmin);
@@ -47,54 +103,28 @@ public class Main {
                         } else {
                             System.out.println("Invalid admin data");
                         }
-                        break;
-
-                    case "-cc":
-                    case "--create-category":
-                        if (categoryCount < categories.length) {
-                            categories[categoryCount++] = UserUtils.createCategory();
-                        } else {
-                            System.out.println("Category storage is full");
-                        }
-                        break;
-
-                    case "-cl":
-                    case "--category-list":
-                        UserUtils.printCategoryList(categories);
-                        break;
-
-                    case "-cp":
-                    case "--create-product":
-                        if (productCount < products.length) {
-                            products[productCount++] = UserUtils.createProduct(categories);
-                        } else {
-                            System.out.println("Product storage is full");
-                        }
-                        break;
-
-                    case "-po":
-                    case "--print-orders":
-                        eCom.printAllOrders();
-                        break;
-
-                    case "-pu":
-                    case "--print-users":
-                        eCom.printAllUsers();
-                        break;
-
-                    case "-q":
-                    case "--quit":
+                    }
+                    case "-cc", "--create-category" -> {
+                        Category newCategory = UserUtils.createCategory();
+                        eCom.addCategory(newCategory);
+                        System.out.println("Category added.");
+                    }
+                    case "-cl", "--category-list" -> eCom.printAllCategories();
+                    case "-cp", "--create-product" -> {
+                        Product newProduct = UserUtils.createProduct(eCom.getCategories());
+                        eCom.addProduct(newProduct);
+                        System.out.println("Product added.");
+                    }
+                    case "-po", "--print-orders" -> eCom.printAllOrders();
+                    case "-pu", "--print-users" -> eCom.printAllUsers();
+                    case "-q", "--quit" -> {
                         run = false;
                         System.out.println("Exiting the program");
-                        break;
-
-                    default:
-                        System.out.println("Unknown command: " + command);
-                        break;
+                    }
+                    default -> System.out.println("Unknown command: " + command);
                 }
             }
-        }
-
+        }*/
 
 /*
            //Example for task 2

@@ -19,6 +19,10 @@ public class Admin extends User {
         return "Admin Account";
     }
 
+    public void changeLogin(String newLogin) {
+        updateLogin(newLogin);
+    }
+
     @Override
     public void resetPassword() {
         Scanner scanner = new Scanner(System.in);

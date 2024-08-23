@@ -1,17 +1,19 @@
 package task2.order;
 
+import task2.Discountable;
 import task2.product.Product;
 import task2.user.Customer;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Order {
+public class Order implements Taxable, Discountable {
     private LocalDate orderDate;
     private double totalAmount;
     private Customer customer;
     private OrderItem[] orderItems;
     private String orderStatus;
+    private double discountPercentage;
 
     public Order(Customer customer) {
         this.orderDate = LocalDate.now();
@@ -19,6 +21,52 @@ public class Order {
         this.customer = customer;
         this.orderItems = new OrderItem[10];
         this.orderStatus = OrderStatus.PROCESSING;
+        this.discountPercentage = 0.0;
+    }
+
+    @Override
+    public void applyDiscount(double percentage) {
+        if (percentage < 0 || percentage > 100) {
+            System.out.println("Invalid discount percentage. Must be between 0 and 100");
+        } else {
+            discountPercentage = percentage;
+            double discountAmount = totalAmount * (discountPercentage / 100);
+            totalAmount -= discountAmount;
+            System.out.println("Applied " + percentage + "% discount. New total amount: $" + totalAmount);
+        }
+    }
+
+    @Override
+    public void removeDiscount() {
+        double discountAmount = totalAmount * (discountPercentage / 100);
+        totalAmount += discountAmount;
+        discountPercentage = 0;
+        System.out.println("Discount removed. Total amount reset to original: $" + totalAmount);
+    }
+
+    @Override
+    public double calculateTax() {
+        double totalTax = 0.0;
+        for (OrderItem item : orderItems) {
+            if (item != null) {
+                totalTax += item.getProduct().calculateTax() * item.getQuantity();
+            }
+        }
+        return totalTax;
+    }
+
+    @Override
+    public double getAverageTaxRate() {
+        double totalTaxRate = 0.0;
+        int itemCount = 0;
+
+        for (OrderItem item : orderItems) {
+            if (item != null) {
+                totalTaxRate += item.getProduct().getAverageTaxRate();
+                itemCount++;
+            }
+        }
+        return itemCount > 0 ? totalTaxRate / itemCount : 0.0;
     }
 
     public void addItem(Product product, int quantity) {
@@ -68,19 +116,19 @@ public class Order {
 
     @Override
     public String toString() {
-        String orderInfo = "Order Date: " + orderDate + '\n' +
+        StringBuilder orderInfo = new StringBuilder("Order Date: " + orderDate + '\n' +
                 "Customer: " + customer.getEmail() + '\n' +
                 "Total Amount: $" + totalAmount + '\n' +
                 "Order Status: " + orderStatus + '\n' +
-                "Items: \n";
+                "Items: \n");
 
         for (OrderItem item : orderItems) {
             if (item != null) {
-                orderInfo += item.toString() + '\n';
+                orderInfo.append(item).append('\n');
             }
         }
 
-        return orderInfo;
+        return orderInfo.toString();
     }
 
     @Override
