@@ -1,4 +1,4 @@
-package task2;
+package task2.utils;
 
 public interface Discountable{
     void applyDiscount(double percentage);

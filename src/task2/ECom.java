@@ -5,7 +5,16 @@ import task2.product.Category;
 import task2.product.Product;
 import task2.user.User;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
+
 public class ECom implements Searchable{
+    private static final Logger LOGGER = Logger.getLogger(ECom.class.getName());
+    private static final String LOG_FILE = "ecom_log.txt";
+
     private Order[] orders;
     private User[] users;
     private Category[] categories;
@@ -17,7 +26,7 @@ public class ECom implements Searchable{
     private static int EComInstance;
 
     static {
-        System.out.println("ECom class loaded.");
+        logMessage("ECom class loaded");
         EComInstance = 0;
     }
 
@@ -31,6 +40,7 @@ public class ECom implements Searchable{
         this.categoryCount = categories.length;
         this.productCount = products.length;
         EComInstance++;
+        logMessage("ECom class instance created");
     }
 
     public ECom() {
@@ -38,6 +48,20 @@ public class ECom implements Searchable{
         this.users = new User[10];
         this.categories = new Category[10];
         this.products = new Product[10];
+        EComInstance++;
+        logMessage("ECom class instance created");
+    }
+
+    private static void logMessage(String message) {
+        LOGGER.info(message);
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String logEntry = timeStamp + " - " + message;
+
+        try (FileWriter fileWriter = new FileWriter(LOG_FILE, true)) {
+            fileWriter.write(logEntry + System.lineSeparator());
+        } catch (IOException e) {
+            System.err.println("Failed to write log to file: " + e.getMessage());
+        }
     }
 
     public void addOrder(Order order) {
@@ -57,6 +81,7 @@ public class ECom implements Searchable{
                 return;
             }
         }
+        logMessage("Failed to add user - User list is full");
         System.out.println("User list is full");
     }
 
@@ -67,6 +92,7 @@ public class ECom implements Searchable{
                 return;
             }
         }
+        logMessage("Failed to add category - Category list is full");
         System.out.println("Category list is full");
     }
 
@@ -77,6 +103,7 @@ public class ECom implements Searchable{
                 return;
             }
         }
+        logMessage("Failed to add product - Product list is full");
         System.out.println("Product list is full");
     }
 
@@ -89,6 +116,7 @@ public class ECom implements Searchable{
                 result[count++] = products[i];
             }
         }
+        logMessage("Search for product by name: " + name + " found " + count + " results");
         return trimProductArray(result, count);
     }
 
@@ -196,6 +224,26 @@ public class ECom implements Searchable{
         this.products = products;
     }
 
+    public void setOrderCount(int orderCount) {
+        this.orderCount = orderCount;
+    }
+
+    public void setUserCount(int userCount) {
+        this.userCount = userCount;
+    }
+
+    public void setCategoryCount(int categoryCount) {
+        this.categoryCount = categoryCount;
+    }
+
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
+    }
+
+    public static void setEComInstance(int EComInstance) {
+        ECom.EComInstance = EComInstance;
+    }
+
     public Order[] getOrders() {
         return orders;
     }
@@ -210,6 +258,26 @@ public class ECom implements Searchable{
 
     public Product[] getProducts() {
         return products;
+    }
+
+    public int getOrderCount() {
+        return orderCount;
+    }
+
+    public int getUserCount() {
+        return userCount;
+    }
+
+    public int getCategoryCount() {
+        return categoryCount;
+    }
+
+    public int getProductCount() {
+        return productCount;
+    }
+
+    public static int getEComInstance() {
+        return EComInstance;
     }
 
     @Override

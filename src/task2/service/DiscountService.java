@@ -1,6 +1,6 @@
-package task2.services;
+package task2.service;
 
-import task2.Discountable;
+import task2.utils.Discountable;
 
 public class DiscountService {
     public void applySeasonalDiscount(Discountable item, double discountPercentage) {

@@ -1,7 +1,7 @@
 package task2.product;
 
-import task2.Discountable;
-import task2.order.Taxable;
+import task2.utils.Discountable;
+import task2.utils.Taxable;
 
 import java.time.LocalDate;
 import java.util.Objects;

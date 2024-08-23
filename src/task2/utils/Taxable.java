@@ -1,4 +1,4 @@
-package task2.order;
+package task2.utils;
 
 public interface Taxable {
     double calculateTax();

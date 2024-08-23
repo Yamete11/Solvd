@@ -1,8 +1,9 @@
 package task2.order;
 
-import task2.Discountable;
+import task2.utils.Discountable;
 import task2.product.Product;
 import task2.user.Customer;
+import task2.utils.Taxable;
 
 import java.time.LocalDate;
 import java.util.Objects;

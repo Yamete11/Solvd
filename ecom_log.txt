@@ -1,0 +1,2 @@
+2024-08-24 01:06:39 - ECom class loaded
+2024-08-24 01:06:39 - ECom class instance created

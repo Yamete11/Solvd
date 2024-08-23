@@ -1,4 +1,4 @@
-package task2.services;
+package task2.service;
 
 import task2.user.User;
 
