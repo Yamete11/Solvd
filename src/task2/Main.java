@@ -1,5 +1,6 @@
 package task2;
 
+import task2.exception.*;
 import task2.product.*;
 import task2.user.*;
 import task2.order.*;
@@ -15,6 +16,43 @@ public class Main {
 
         ECom eCom = new ECom();
 
+        try {
+            eCom.addUser(null);
+        } catch (InvalidUserException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        try {
+            eCom.addProduct(new Product("Laptop", 0, new Category("Electronics", 15)));
+        } catch (ProductOutOfStockException | DuplicateProductException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        try {
+            eCom.addCategory(new Category("", 15));
+        } catch (InvalidCategoryException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        try {
+            eCom.addProduct(new Product("Laptop", 1000, new Category("Electronics", 15)));
+            eCom.addProduct(new Product("Laptop", 1000, new Category("Electronics", 15)));
+        } catch (DuplicateProductException | ProductOutOfStockException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
+        Customer customer = new Customer("john.marston@example.com", "password11215125", "john_marston", new Address("Sesame street", "City", "12345", "Country"), 50.0);
+        Product product = new Product("Smartphone", 500, 1, new Category("Electronics", 15));
+
+        Order order = new Order(customer);
+        order.addItem(product, 1);
+
+        try {
+            customer.processPayment(order.calculateTotalAmount());
+        } catch (InsufficientFundsException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+
         /*Category electronics = new Category("Electronics", 15.0);
         Category books = new Category("Books", 5.0);
 
@@ -29,10 +67,10 @@ public class Main {
         eCom.addProduct(novel);
         eCom.addProduct(phone);
 
-        Address customerAddress = new Address("123 Main St", "City", "12345", "Country");
+        Address customerAddress = new Address("Hi there street", "City", "12345", "Country");
 
-        Customer customer1 = new Customer("john@example.com", "password123", "john_doe", customerAddress, 200.00);
-        Customer customer2 = new Customer("jane@example.com", "password456", "jane_doe", customerAddress, new CardDetails("1234567812345678", "Jane Doe", LocalDate.of(2025, 12, 31), "123"), 500.00);
+        Customer customer1 = new Customer("john@example.com", "password123", "john_marst", customerAddress, 200.00);
+        Customer customer2 = new Customer("art@example.com", "password456", "art_mor", customerAddress, new CardDetails("1234567812345678", "Arthur Morgan", LocalDate.of(2025, 12, 31), "123"), 500.00);
 
         eCom.addUser(customer1);
         eCom.addUser(customer2);

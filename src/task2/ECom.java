@@ -1,5 +1,6 @@
 package task2;
 
+import task2.exception.*;
 import task2.order.Order;
 import task2.product.Category;
 import task2.product.Product;
@@ -60,9 +61,11 @@ public class ECom implements Searchable{
         try (FileWriter fileWriter = new FileWriter(LOG_FILE, true)) {
             fileWriter.write(logEntry + System.lineSeparator());
         } catch (IOException e) {
-            System.err.println("Failed to write log to file: " + e.getMessage());
+            throw new RuntimeException("Failed to write log to file: " + e.getMessage(), e);
         }
     }
+
+
 
     public void addOrder(Order order) {
         for (int i = 0; i < orders.length; i++) {
@@ -75,6 +78,9 @@ public class ECom implements Searchable{
     }
 
     public void addUser(User user) {
+        if (user == null) {
+            throw new InvalidUserException("User cannot be null ");
+        }
         for (int i = 0; i < users.length; i++) {
             if (users[i] == null) {
                 users[i] = user;
@@ -86,6 +92,9 @@ public class ECom implements Searchable{
     }
 
     public void addCategory(Category category) {
+        if (category == null || category.getTitle() == null || category.getTitle().isEmpty()) {
+            throw new InvalidCategoryException("Category is invalid or has no title");
+        }
         for (int i = 0; i < categories.length; i++) {
             if (categories[i] == null) {
                 categories[i] = category;
@@ -96,10 +105,17 @@ public class ECom implements Searchable{
         System.out.println("Category list is full");
     }
 
-    public void addProduct(Product product) {
+    public void addProduct(Product product) throws DuplicateProductException {
+        if (product.getStockQuantity() <= 0) {
+            throw new ProductOutOfStockException("Product is out of stock");
+        }
         for (int i = 0; i < products.length; i++) {
+            if (products[i] != null && products[i].getTitle().equals(product.getTitle())) {
+                throw new DuplicateProductException("Product with title " + product.getTitle() + " already exists");
+            }
             if (products[i] == null) {
                 products[i] = product;
+                productCount++;
                 return;
             }
         }

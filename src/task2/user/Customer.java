@@ -1,5 +1,7 @@
 package task2.user;
 
+import task2.exception.InsufficientFundsException;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -43,6 +45,17 @@ public class Customer extends User implements Payable{
             System.out.println("Password has been successfully reset.");
         } else {
             System.out.println("Email address is incorrect. Cannot reset password.");
+        }
+    }
+
+    @Override
+    public boolean processPayment(double amount) {
+        if (accountBalance >= amount) {
+            accountBalance -= amount;
+            System.out.println("Payment of $" + amount + " processed for customer");
+            return true;
+        } else {
+            throw new InsufficientFundsException("Insufficient balance for payment");
         }
     }
 
@@ -101,18 +114,6 @@ public class Customer extends User implements Payable{
         Customer customer = (Customer) o;
         return Objects.equals(address, customer.address) &&
                 Objects.equals(paymentMethod, customer.paymentMethod);
-    }
-
-    @Override
-    public boolean processPayment(double amount) {
-        if (accountBalance >= amount) {
-            accountBalance -= amount;
-            System.out.println("Payment of $" + amount + " processed for customer");
-            return true;
-        } else {
-            System.out.println("Insufficient balance");
-            return false;
-        }
     }
 
     @Override
