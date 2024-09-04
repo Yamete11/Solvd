@@ -4,6 +4,8 @@ import task2.utils.Discountable;
 import task2.utils.Taxable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Product implements Reviewable, Taxable, Discountable {
@@ -11,8 +13,7 @@ public class Product implements Reviewable, Taxable, Discountable {
     private double price;
     private int stockQuantity;
     private Category category;
-    private Review[] reviews;
-    private int reviewCount;
+    private List<Review> reviews;
     private double taxRate;
     private double discountPercentage;
 
@@ -21,19 +22,15 @@ public class Product implements Reviewable, Taxable, Discountable {
         this.price = price;
         this.stockQuantity = stockQuantity;
         this.category = category;
-        this.reviews = new Review[10];
-        this.reviewCount = 0;
+        this.reviews = new ArrayList<>();
         this.taxRate = category.getVat();
-        this.discountPercentage = 0.0;
     }
 
     public Product(String title, double price, Category category) {
         this.title = title;
         this.price = price;
-        this.stockQuantity = 0;
         this.category = category;
-        this.reviews = new Review[10];
-        this.reviewCount = 0;
+        this.reviews = new ArrayList<>();
         this.taxRate = category.getVat();
     }
 
@@ -67,22 +64,17 @@ public class Product implements Reviewable, Taxable, Discountable {
 
     @Override
     public void addReview(String reviewerName, String comment, int rating) {
-        if (reviewCount >= reviews.length) {
-            Review[] newReviews = new Review[reviews.length * 2];
-            System.arraycopy(reviews, 0, newReviews, 0, reviews.length);
-            reviews = newReviews;
-        }
-        reviews[reviewCount++] = new Review(reviewerName, comment, rating);
+        reviews.add(new Review(reviewerName, comment, rating));
     }
 
     @Override
     public double getAverageRating() {
-        if (reviewCount == 0) return 0.0;
+        if (reviews.isEmpty()) return 0.0;
         double totalRating = 0.0;
-        for (int i = 0; i < reviewCount; i++) {
-            totalRating += reviews[i].getRating();
+        for (Review review : reviews) {
+            totalRating += review.getRating();
         }
-        return totalRating / reviewCount;
+        return totalRating / reviews.size();
     }
 
     public void updateStock(int quantity) {
@@ -109,8 +101,8 @@ public class Product implements Reviewable, Taxable, Discountable {
                 "Average Rating: " + getAverageRating() + "/5" + '\n' +
                 "Reviews:\n");
 
-        for (int i = 0; i < reviewCount; i++) {
-            productInfo.append(reviews[i].toString()).append("\n\n");
+        for (Review review : reviews) {
+            productInfo.append(review.toString()).append("\n\n");
         }
 
         return productInfo.toString();
@@ -132,12 +124,8 @@ public class Product implements Reviewable, Taxable, Discountable {
         this.category = category;
     }
 
-    public void setReviews(Review[] reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
-    }
-
-    public void setReviewCount(int reviewCount) {
-        this.reviewCount = reviewCount;
     }
 
     public String getTitle() {
@@ -156,12 +144,8 @@ public class Product implements Reviewable, Taxable, Discountable {
         return category;
     }
 
-    public Review[] getReviews() {
+    public List<Review> getReviews() {
         return reviews;
-    }
-
-    public int getReviewCount() {
-        return reviewCount;
     }
 
     @Override
@@ -180,69 +164,4 @@ public class Product implements Reviewable, Taxable, Discountable {
                 category.equals(product.category);
     }
 
-    public class Review {
-        private String title;
-        private String comment;
-        private int rating;
-        private final LocalDate reviewDate;
-
-        public Review(String title, String comment, int rating) {
-            this.title = title;
-            this.comment = comment;
-            this.rating = rating;
-            this.reviewDate = LocalDate.now();
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
-        public void setComment(String comment) {
-            this.comment = comment;
-        }
-
-        public int getRating() {
-            return rating;
-        }
-
-        public void setRating(int rating) {
-            this.rating = rating;
-        }
-
-        public LocalDate getReviewDate() {
-            return reviewDate;
-        }
-
-        @Override
-        public String toString() {
-            return "Title: " + title + '\n' +
-                    "Rating: " + rating + "/5" + '\n' +
-                    "Comment: " + comment + '\n' +
-                    "Date: " + reviewDate;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(title, comment, rating, reviewDate);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Review review = (Review) o;
-            return rating == review.rating &&
-                    title.equals(review.title) &&
-                    comment.equals(review.comment) &&
-                    reviewDate.equals(review.reviewDate);
-        }
-    }
 }

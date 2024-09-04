@@ -6,13 +6,15 @@ import task2.user.Customer;
 import task2.utils.Taxable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Order implements Taxable, Discountable {
     private LocalDate orderDate;
     private double totalAmount;
     private Customer customer;
-    private OrderItem[] orderItems;
+    private List<OrderItem> orderItems;
     private String orderStatus;
     private double discountPercentage;
 
@@ -20,7 +22,7 @@ public class Order implements Taxable, Discountable {
         this.orderDate = LocalDate.now();
         this.totalAmount = 0.0;
         this.customer = customer;
-        this.orderItems = new OrderItem[10];
+        this.orderItems = new ArrayList<>();
         this.orderStatus = OrderStatus.PROCESSING;
         this.discountPercentage = 0.0;
     }
@@ -49,9 +51,7 @@ public class Order implements Taxable, Discountable {
     public double calculateTax() {
         double totalTax = 0.0;
         for (OrderItem item : orderItems) {
-            if (item != null) {
-                totalTax += item.getProduct().calculateTax() * item.getQuantity();
-            }
+            totalTax += item.getProduct().calculateTax() * item.getQuantity();
         }
         return totalTax;
     }
@@ -62,31 +62,22 @@ public class Order implements Taxable, Discountable {
         int itemCount = 0;
 
         for (OrderItem item : orderItems) {
-            if (item != null) {
-                totalTaxRate += item.getProduct().getAverageTaxRate();
-                itemCount++;
-            }
+            totalTaxRate += item.getProduct().getAverageTaxRate();
+            itemCount++;
         }
         return itemCount > 0 ? totalTaxRate / itemCount : 0.0;
     }
 
     public void addItem(Product product, int quantity) {
-        for (int i = 0; i < orderItems.length; i++) {
-            if (orderItems[i] == null) {
-                orderItems[i] = new OrderItem(product, quantity);
-                calculateTotalAmount();
-                return;
-            }
-        }
-        System.out.println("Order is full");
+        OrderItem newItem = new OrderItem(product, quantity);
+        orderItems.add(newItem);
+        calculateTotalAmount();
     }
 
     public double calculateTotalAmount() {
         totalAmount = 0.0;
         for (OrderItem item : orderItems) {
-            if (item != null) {
-                totalAmount += item.getTotalPrice();
-            }
+            totalAmount += item.getTotalPrice();
         }
         return totalAmount;
     }
@@ -107,7 +98,7 @@ public class Order implements Taxable, Discountable {
         return customer;
     }
 
-    public OrderItem[] getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
@@ -124,9 +115,7 @@ public class Order implements Taxable, Discountable {
                 "Items: \n");
 
         for (OrderItem item : orderItems) {
-            if (item != null) {
-                orderInfo.append(item).append('\n');
-            }
+            orderInfo.append(item).append('\n');
         }
 
         return orderInfo.toString();
